@@ -56,7 +56,8 @@ No nível Mestre, o desafio se intensifica com a adição de funcionalidades ava
 - **Empates:** O sistema será capaz de lidar com empates, exibindo mensagens apropriadas.
 - **Exibição de Resultados:** Exibição dos resultados das comparações de forma clara e interativa.
 
----
+---<img width="1757" height="1096" alt="image" src="https://github.com/user-attachments/assets/eff3d7da-3a41-4cf2-a03a-b330852302af" />
+
 
 ## 📋 Requisitos Funcionais Comuns
 - **Cadastro de Cartas:** O sistema deve permitir o cadastro de cartas com as informações necessárias.
