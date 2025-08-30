@@ -1,0 +1,139 @@
+// Desafio Super Trunfo - Países (Cidades) — Nível Novato
+// Autor: Beatriz Cardoso Cunha
+// Objetivo: Cadastrar duas cartas de cidades e comparar um único atributo usando if / if-else
+// Requisitos atendidos:
+//  - Entrada via terminal (scanf / fgets)
+//  - Estruturas de decisão if / if-else
+//  - Regra: maior vence, EXCETO densidade populacional (menor vence)
+//  - Exibição organizada das propriedades
+
+#include <stdio.h>
+#include <string.h>
+
+#define TAM_STR 64
+
+// Atributos possíveis para comparação
+// 1 = População (maior vence)
+// 2 = Área (maior vence)
+// 3 = PIB (maior vence)
+// 4 = Pontos Turísticos (maior vence)
+// 5 = Densidade Populacional (menor vence)
+
+typedef struct {
+    char estado[TAM_STR];
+    char codigo[TAM_STR];
+    char cidade[TAM_STR];
+    unsigned long populacao;   // habitantes
+    double area;               // km^2
+    double pib;                // R$ bilhões (ou unidade escolhida)
+    int pontosTuristicos;      // quantidade
+} Carta;
+
+// Função utilitária para ler linha com espaços e remover '\n'
+void lerLinha(char *dest, int max) {
+    if (fgets(dest, max, stdin)) {
+        size_t n = strlen(dest);
+        if (n > 0 && dest[n-1] == '\n') dest[n-1] = '\0';
+    }
+}
+
+// Exibição formatada de uma carta
+void exibirCarta(const char *titulo, const Carta *c) {
+    printf("\n=== %s ===\n", titulo);
+    printf("Estado: %s\n", c->estado);
+    printf("Código: %s\n", c->codigo);
+    printf("Cidade: %s\n", c->cidade);
+    printf("População: %lu\n", c->populacao);
+    printf("Área (km^2): %.2f\n", c->area);
+    printf("PIB: %.2f\n", c->pib);
+    printf("Pontos Turísticos: %d\n", c->pontosTuristicos);
+    // Derivado: densidade
+    if (c->area > 0) {
+        double dens = (double)c->populacao / c->area;
+        printf("Densidade (hab/km^2): %.2f\n", dens);
+    } else {
+        printf("Densidade (hab/km^2): N/D (área inválida)\n");
+    }
+}
+
+int main(void) {
+    Carta A = {0}, B = {0};
+
+    // ===== Entrada de Dados (Carta A) =====
+    printf("Cadastro da Carta A\n");
+    printf("Estado: "); lerLinha(A.estado, TAM_STR);
+    printf("Código da carta: "); lerLinha(A.codigo, TAM_STR);
+    printf("Cidade: "); lerLinha(A.cidade, TAM_STR);
+    printf("População (inteiro, ex: 1200000): "); scanf("%lu", &A.populacao); getchar();
+    printf("Área em km^2 (ex: 1523.45): "); scanf("%lf", &A.area); getchar();
+    printf("PIB (ex: 89.7): "); scanf("%lf", &A.pib); getchar();
+    printf("Pontos turísticos (inteiro): "); scanf("%d", &A.pontosTuristicos); getchar();
+
+    // ===== Entrada de Dados (Carta B) =====
+    printf("\nCadastro da Carta B\n");
+    printf("Estado: "); lerLinha(B.estado, TAM_STR);
+    printf("Código da carta: "); lerLinha(B.codigo, TAM_STR);
+    printf("Cidade: "); lerLinha(B.cidade, TAM_STR);
+    printf("População (inteiro, ex: 800000): "); scanf("%lu", &B.populacao); getchar();
+    printf("Área em km^2 (ex: 987.10): "); scanf("%lf", &B.area); getchar();
+    printf("PIB (ex: 45.0): "); scanf("%lf", &B.pib); getchar();
+    printf("Pontos turísticos (inteiro): "); scanf("%d", &B.pontosTuristicos); getchar();
+
+    // ===== Exibição das cartas =====
+    exibirCarta("CARTA A", &A);
+    exibirCarta("CARTA B", &B);
+
+    // ===== Comparação (definida no código, conforme nível Novato) =====
+    // Altere este valor para escolher o atributo a comparar
+    const int ATRIBUTO = 1; // 1=População, 2=Área, 3=PIB, 4=Pontos, 5=Densidade (menor vence)
+
+    printf("\n>>> Comparação (atributo escolhido no código: ");
+    switch (ATRIBUTO) {
+        case 1: printf("População — maior vence)\n"); break;
+        case 2: printf("Área — maior vence)\n"); break;
+        case 3: printf("PIB — maior vence)\n"); break;
+        case 4: printf("Pontos Turísticos — maior vence)\n"); break;
+        case 5: printf("Densidade — menor vence)\n"); break;
+        default: printf("[inválido])\n");
+    }
+
+    int venceuA = 0, venceuB = 0, empate = 0;
+
+    if (ATRIBUTO == 1) { // População
+        if (A.populacao > B.populacao) venceuA = 1;
+        else if (A.populacao < B.populacao) venceuB = 1;
+        else empate = 1;
+    } else if (ATRIBUTO == 2) { // Área
+        if (A.area > B.area) venceuA = 1;
+        else if (A.area < B.area) venceuB = 1;
+        else empate = 1;
+    } else if (ATRIBUTO == 3) { // PIB
+        if (A.pib > B.pib) venceuA = 1;
+        else if (A.pib < B.pib) venceuB = 1;
+        else empate = 1;
+    } else if (ATRIBUTO == 4) { // Pontos Turísticos
+        if (A.pontosTuristicos > B.pontosTuristicos) venceuA = 1;
+        else if (A.pontosTuristicos < B.pontosTuristicos) venceuB = 1;
+        else empate = 1;
+    } else if (ATRIBUTO == 5) { // Densidade — MENOR vence
+        double dA = (A.area > 0) ? (double)A.populacao / A.area : 0.0;
+        double dB = (B.area > 0) ? (double)B.populacao / B.area : 0.0;
+        if (dA < dB) venceuA = 1;
+        else if (dA > dB) venceuB = 1;
+        else empate = 1;
+    } else {
+        printf("Atributo inválido no código. Ajuste a constante ATRIBUTO.\n");
+        return 0;
+    }
+
+    // ===== Resultado =====
+    if (empate) {
+        printf("\nResultado: EMPATE\n");
+    } else if (venceuA) {
+        printf("\nResultado: Venceu a CARTA A (%s - %s)\n", A.estado, A.cidade);
+    } else if (venceuB) {
+        printf("\nResultado: Venceu a CARTA B (%s - %s)\n", B.estado, B.cidade);
+    }
+
+    return 0;
+}
