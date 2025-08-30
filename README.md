@@ -22,7 +22,8 @@ No nível Novato, você começará implementando a lógica básica de comparaç�
 - Após o cadastro, as propriedades da cidade serão exibidas de forma organizada.
 - O resultado da comparação será mostrado, indicando a carta vencedora.
 
----
+--- <img width="1887" height="1263" alt="image" src="https://github.com/user-attachments/assets/226dfe2c-080e-4491-9f78-ec6c867282f5" />
+
 
 ## 🏅 Nível Aventureiro
 
